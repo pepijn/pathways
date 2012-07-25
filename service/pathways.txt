@@ -1,0 +1,58 @@
+path:map00010	Glycolysis / Gluconeogenesis
+path:map00020	Citrate cycle (TCA cycle)
+path:map00030	Pentose phosphate pathway
+path:map00040	Pentose and glucuronate interconversions
+path:map00051	Fructose and mannose metabolism
+path:map00052	Galactose metabolism
+path:map00053	Ascorbate and aldarate metabolism
+path:map00061	Fatty acid biosynthesis
+path:map00062	Fatty acid elongation
+path:map00071	Fatty acid metabolism
+path:map00072	Synthesis and degradation of ketone bodies
+path:map00073	Cutin, suberine and wax biosynthesis
+path:map00100	Steroid biosynthesis
+path:map00120	Primary bile acid biosynthesis
+path:map00121	Secondary bile acid biosynthesis
+path:map00130	Ubiquinone and other terpenoid-quinone biosynthesis
+path:map00140	Steroid hormone biosynthesis
+path:map00190	Oxidative phosphorylation
+path:map00195	Photosynthesis
+path:map00196	Photosynthesis - antenna proteins
+path:map00230	Purine metabolism
+path:map00231	Puromycin biosynthesis
+path:map00232	Caffeine metabolism
+path:map00240	Pyrimidine metabolism
+path:map00250	Alanine, aspartate and glutamate metabolism
+path:map00253	Tetracycline biosynthesis
+path:map00260	Glycine, serine and threonine metabolism
+path:map00270	Cysteine and methionine metabolism
+path:map00280	Valine, leucine and isoleucine degradation
+path:map00281	Geraniol degradation
+path:map00290	Valine, leucine and isoleucine biosynthesis
+path:map00300	Lysine biosynthesis
+path:map00310	Lysine degradation
+path:map00311	Penicillin and cephalosporin biosynthesis
+path:map00312	beta-Lactam resistance
+path:map00330	Arginine and proline metabolism
+path:map00331	Clavulanic acid biosynthesis
+path:map00340	Histidine metabolism
+path:map00350	Tyrosine metabolism
+path:map00351	DDT degradation
+path:map00360	Phenylalanine metabolism
+path:map00361	Chlorocyclohexane and chlorobenzene degradation
+path:map00362	Benzoate degradation
+path:map00363	Bisphenol degradation
+path:map00364	Fluorobenzoate degradation
+path:map00380	Tryptophan metabolism
+path:map00400	Phenylalanine, tyrosine and tryptophan biosynthesis
+path:map00401	Novobiocin biosynthesis
+path:map00402	Benzoxazinoid biosynthesis
+path:map00410	beta-Alanine metabolism
+path:map00430	Taurine and hypotaurine metabolism
+path:map00440	Phosphonate and phosphinate metabolism
+path:map00450	Selenocompound metabolism
+path:map00460	Cyanoamino acid metabolism
+path:map00471	D-Glutamine and D-glutamate metabolism
+path:map00472	D-Arginine and D-ornithine metabolism
+path:map00473	D-Alanine metabolism
+path:map00480	Glutathione metabolism
