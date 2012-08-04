@@ -40,9 +40,7 @@ class PathwayViewController < UIViewController
   end
 
   def openDetailView
-    controller = DetailViewController.alloc.initWithStyle(UITableViewStyleGrouped)
-    controller.enzyme = currentEnzyme
-    navigationController.pushViewController(controller, animated:true)
+    App.open_url "http://www.genome.jp/dbget-bin/www_bget?" + currentEnzyme.key
   end
 
   def viewWillAppear(animated)
