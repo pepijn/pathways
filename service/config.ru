@@ -1,7 +1,7 @@
-require 'sinatra'
-require 'open-uri'
-require 'bio'
-require 'nokogiri'
+require 'bundler'
+Bundler.require
 
-require './app'
+require 'open-uri'
+
+require './service/app'
 run Sinatra::Application

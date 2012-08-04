@@ -1,3 +1,5 @@
+BASE_URL = "http://pathways.dev/"
+
 class AppDelegate
   attr_accessor :navigationController, :data, :doc
 

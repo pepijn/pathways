@@ -8,7 +8,7 @@ class MasterViewController < UITableViewController
     tableView.dataSource = self
 
     self.categories = []
-    BubbleWrap::HTTP.get("http://pathways.dev/pathways") do |response|
+    BubbleWrap::HTTP.get(BASE_URL + "pathways") do |response|
       if response.ok?
         BW::JSON.parse(response.body.to_str).each do |entry|
           categories << Category.new(entry)
@@ -46,7 +46,7 @@ class MasterViewController < UITableViewController
   def tableView(tableView, didSelectRowAtIndexPath:indexPath)
     pathway = categories[indexPath.section].pathways[indexPath.row]
 
-    BW::HTTP.get("http://pathways.dev/maps/#{pathway.key}") do |response|
+    BW::HTTP.get(BASE_URL + "maps/#{pathway.key}") do |response|
       if response.ok?
         pathway.enzymes = BW::JSON.parse(response.body.to_str)
 
