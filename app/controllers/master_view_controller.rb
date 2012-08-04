@@ -8,7 +8,7 @@ class MasterViewController < UITableViewController
     tableView.dataSource = self
 
     self.categories = []
-    BubbleWrap::HTTP.get("http://pathways.dev/pathways.json") do |response|
+    BubbleWrap::HTTP.get("http://pathways.dev/pathways") do |response|
       if response.ok?
         BW::JSON.parse(response.body.to_str).each do |entry|
           categories << Category.new(entry)
@@ -45,19 +45,28 @@ class MasterViewController < UITableViewController
 
   def tableView(tableView, didSelectRowAtIndexPath:indexPath)
     pathway = categories[indexPath.section].pathways[indexPath.row]
-    controller = PathwayViewController.alloc.init
-    controller.pathway = pathway
 
-    if NSFileManager.defaultManager.fileExistsAtPath(pathway.imagePath)
-      pushToController(controller)
-    else
-      BW::HTTP.get("http://rest.kegg.jp/get/#{pathway.key}/image") do |response|
-        if response.ok?
-          response.body.writeToFile(pathway.imagePath, atomically:true)
+    BW::HTTP.get("http://pathways.dev/maps/#{pathway.key}") do |response|
+      if response.ok?
+        pathway.enzymes = BW::JSON.parse(response.body.to_str)
+
+        controller = PathwayViewController.alloc.init
+        controller.pathway = pathway
+
+        if NSFileManager.defaultManager.fileExistsAtPath(pathway.imagePath)
           pushToController(controller)
         else
-          warn "Error while downloading pathway image"
+          BW::HTTP.get("http://rest.kegg.jp/get/#{pathway.key}/image") do |res|
+            if res.ok?
+              res.body.writeToFile(pathway.imagePath, atomically:true)
+              pushToController(controller)
+            else
+              warn "Error while downloading pathway image"
+            end
+          end
         end
+      else
+        warn "Error while downloading enzymes"
       end
     end
   end

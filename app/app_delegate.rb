@@ -1,5 +1,5 @@
 class AppDelegate
-  attr_accessor :navigationController
+  attr_accessor :navigationController, :data, :doc
 
   def application(application, didFinishLaunchingWithOptions:launchOptions)
     @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)

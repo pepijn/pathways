@@ -1,5 +1,5 @@
 class PathwayViewController < UIViewController
-  attr_accessor :pathway, :buttonView
+  attr_accessor :pathway, :buttonView, :currentEnzyme
 
   def loadView
     self.view = PathwayView.alloc.init
@@ -10,6 +10,8 @@ class PathwayViewController < UIViewController
     self.title = pathway.name
     self.view.contentSize = view.imageView.frame.size
     self.view.delegate = self
+
+    becomeFirstResponder
 
     gestureRecognizer = UITapGestureRecognizer.alloc.initWithTarget(self, action:'handleDoubleTap:')
     gestureRecognizer.numberOfTapsRequired = 2
@@ -22,14 +24,24 @@ class PathwayViewController < UIViewController
       button = UIButton.buttonWithType(UIButtonTypeCustom)
       button.frame = enzyme.frame
       button.tag = index
-      button.addTarget(self, action:'openDetailView:', forControlEvents:UIControlEventTouchDown)
+      button.addTarget(self, action:'showMenuController:', forControlEvents:UIControlEventTouchDown)
       buttonView.addSubview(button)
     end
   end
 
-  def openDetailView(sender)
+  def showMenuController(sender)
+    self.currentEnzyme = pathway.enzymes[sender.tag]
+
+    menu = UIMenuController.sharedMenuController
+    menu.menuItems = [UIMenuItem.alloc.initWithTitle(currentEnzyme.name,
+      action:'openDetailView')]
+    menu.setTargetRect(sender.frame, inView:buttonView)
+    menu.setMenuVisible(true, animated:true)
+  end
+
+  def openDetailView
     controller = DetailViewController.alloc.initWithStyle(UITableViewStyleGrouped)
-    controller.enzyme = pathway.enzymes[sender.tag]
+    controller.enzyme = currentEnzyme
     navigationController.pushViewController(controller, animated:true)
   end
 
@@ -53,6 +65,14 @@ class PathwayViewController < UIViewController
     else
       view.setZoomScale(view.minimumZoomScale, animated:true)
     end
+  end
 
+  # UIMenuController
+  def canBecomeFirstResponder
+    true
+  end
+
+  def canPerformAction(action, withSender:sender)
+    action.to_s == 'openDetailView'
   end
 end

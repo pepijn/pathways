@@ -4,7 +4,10 @@ class Pathway
   def initialize(entry)
     self.key = entry['key']
     self.name = entry['name']
-    self.enzymes = (entry['enzymes'] || []).map {|entry| Enzyme.new(entry) }
+  end
+
+  def enzymes=(entry)
+    @enzymes = (entry['enzymes'] || []).map {|entry| Enzyme.new(entry) }
   end
 
   def imagePath
