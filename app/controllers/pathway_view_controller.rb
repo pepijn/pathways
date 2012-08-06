@@ -22,22 +22,14 @@ class PathwayViewController < UIViewController
       if response.ok?
         pathway.enzymes = BW::JSON.parse(response.body.to_str)
 
-        if NSFileManager.defaultManager.fileExistsAtPath(pathway.imagePath)
-          view.imageView = pathway.imagePath
-          addButtons
-          MBProgressHUD.hideHUDForView(view, animated:true)
-          self.view.zoomScale = view.minimumZoomScale
-        else
-          BW::HTTP.get("http://rest.kegg.jp/get/#{pathway.key}/image") do |res|
-            if res.ok?
-              res.body.writeToFile(pathway.imagePath, atomically:true)
-
-              view.imageView = pathway.imagePath
-              addButtons
-              MBProgressHUD.hideHUDForView(view, animated:true)
-            else
-              warn "Error while downloading pathway image"
-            end
+        BW::HTTP.get(BASE_URL + "/pathways/#{pathway.key}.png") do |res|
+          if res.ok?
+            view.imageView = res.body
+            addButtons
+            self.view.zoomScale = view.minimumZoomScale
+            MBProgressHUD.hideHUDForView(view, animated:true)
+          else
+            warn "Error while downloading pathway image"
           end
         end
       else

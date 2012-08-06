@@ -8,7 +8,7 @@ get '/pathways' do
   end
 
   # Artificial limit
-  keys = keys[0..20]
+  keys = keys[0..149]
 
   pathways = []
   API_LIMIT = 10
@@ -47,11 +47,20 @@ get '/pathways' do
   categories.to_json
 end
 
+get '/pathways/:entry.png' do
+  content_type :png
+  url = "http://rest.kegg.jp/get/#{params[:entry]}/image"
+  puts url
+  open "http://rest.kegg.jp/get/#{params[:entry]}/image" do |file|
+    file.read
+  end
+end
+
 get "/pathways/:entry" do
+  content_type :json
   enzymes = []
   entry = params[:entry]
   url = "http://www.genome.jp/kegg-bin/download?format=kgml&entry=" + entry
-
 
   # Parse XML
   open(url) do |file|

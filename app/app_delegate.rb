@@ -1,4 +1,4 @@
-BASE_URL = "http://metabomap.plict.nl/"
+BASE_URL = "http://localhost:5000/"
 
 class AppDelegate
   attr_accessor :navigationController, :data, :doc

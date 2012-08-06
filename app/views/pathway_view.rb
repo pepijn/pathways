@@ -10,8 +10,8 @@ class PathwayView < UIScrollView
     self
   end
 
-  def imageView=(path)
-    image = UIImage.imageWithContentsOfFile(path)
+  def imageView=(imageData)
+    image = UIImage.imageWithData(imageData)
     @imageView = UIImageView.alloc.initWithImage(image)
     imageView.alpha = 0
     imageView.userInteractionEnabled = true
