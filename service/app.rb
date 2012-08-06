@@ -8,7 +8,7 @@ get '/pathways' do
   end
 
   # Artificial limit
-  keys = keys[0..100]
+  keys = keys[0..80] # 148
 
   pathways = []
   API_LIMIT = 10
