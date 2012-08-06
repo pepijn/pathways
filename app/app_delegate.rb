@@ -1,4 +1,4 @@
-BASE_URL = "http://metabomap.heroku.com/"
+BASE_URL = "http://metabomap.herokuapp.com/"
 
 class AppDelegate
   attr_accessor :navigationController, :data, :doc

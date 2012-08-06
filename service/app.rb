@@ -21,7 +21,7 @@ get '/pathways' do
 
         pathway = Bio::KEGG::PATHWAY.new(entry)
         pathways << {
-          key: pathway.entry_id.gsub('map', 'ko'),
+          key: pathway.entry_id.gsub('map', 'ec'),
           name: pathway.name,
           category: pathway.keggclass.gsub('Metabolism; ', '')
         }
@@ -52,11 +52,12 @@ get "/pathways/:entry" do
   entry = params[:entry]
   url = "http://www.genome.jp/kegg-bin/download?format=kgml&entry=" + entry
 
+
   # Parse XML
   open(url) do |file|
     doc = Nokogiri.XML file
 
-    for enzyme in doc.xpath('//entry[@type="enzyme"]/graphics') do
+    for enzyme in doc.xpath('/pathway/entry[@type="enzyme"]/graphics') do
       enzymes << {
         key: enzyme['name'],
         frame: [[enzyme['x'], enzyme['y']], [enzyme['width'], enzyme['height']]]
