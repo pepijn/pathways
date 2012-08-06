@@ -8,26 +8,47 @@ get '/pathways' do
   end
 
   # Artificial limit
-  keys = keys[0..80] # 148
+  keys = keys[0..150] # 148
 
+  threads = []
   pathways = []
-  API_LIMIT = 10
-  (keys.size / API_LIMIT).ceil.times.each do |offset|
-    offset *= API_LIMIT
+  keys.each.with_index do |key, index|
+    threads << Thread.new(index) do |index|
+      open('http://rest.kegg.jp/get/' + key) do |f|
+        f.read.split('///').each do |entry|
+          next if entry.chomp.empty?
 
-    open('http://rest.kegg.jp/get/' + keys[offset..(offset + API_LIMIT)].join('+')) do |f|
-      f.read.split('///').each do |entry|
-        next if entry.chomp.empty?
-
-        pathway = Bio::KEGG::PATHWAY.new(entry)
-        pathways << {
-          key: pathway.entry_id.gsub('map', 'ec'),
-          name: pathway.name,
-          category: pathway.keggclass.gsub('Metabolism; ', '')
-        }
+          pathway = Bio::KEGG::PATHWAY.new(entry)
+          pathways[index] = {
+            key: pathway.entry_id.gsub('map', 'ec'),
+            name: pathway.name,
+            category: pathway.keggclass.gsub('Metabolism; ', '')
+          }
+        end
       end
     end
   end
+
+  threads.map &:join
+
+  # pathways = []
+  # API_LIMIT = 10
+  # (keys.size / API_LIMIT).ceil.times.each do |offset|
+  #   offset *= API_LIMIT
+  #
+  #   open('http://rest.kegg.jp/get/' + keys[offset..(offset + API_LIMIT)].join('+')) do |f|
+  #     f.read.split('///').each do |entry|
+  #       next if entry.chomp.empty?
+  #
+  #       pathway = Bio::KEGG::PATHWAY.new(entry)
+  #       pathways << {
+  #         key: pathway.entry_id.gsub('map', 'ec'),
+  #         name: pathway.name,
+  #         category: pathway.keggclass.gsub('Metabolism; ', '')
+  #       }
+  #     end
+  #   end
+  # end
 
   categories = []
   pathways.each do |pathway|
