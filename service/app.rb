@@ -31,25 +31,6 @@ get '/pathways' do
 
   threads.map &:join
 
-  # pathways = []
-  # API_LIMIT = 10
-  # (keys.size / API_LIMIT).ceil.times.each do |offset|
-  #   offset *= API_LIMIT
-  #
-  #   open('http://rest.kegg.jp/get/' + keys[offset..(offset + API_LIMIT)].join('+')) do |f|
-  #     f.read.split('///').each do |entry|
-  #       next if entry.chomp.empty?
-  #
-  #       pathway = Bio::KEGG::PATHWAY.new(entry)
-  #       pathways << {
-  #         key: pathway.entry_id.gsub('map', 'ec'),
-  #         name: pathway.name,
-  #         category: pathway.keggclass.gsub('Metabolism; ', '')
-  #       }
-  #     end
-  #   end
-  # end
-
   categories = []
   pathways.each do |pathway|
     category = categories.select {|c| c[:name] == pathway[:category] }.first
