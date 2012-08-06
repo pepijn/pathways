@@ -3,12 +3,10 @@ class PathwayViewController < UIViewController
 
   def loadView
     self.view = PathwayView.alloc.init
-    view.imageView = pathway.imagePath
   end
 
   def viewDidLoad
     self.title = pathway.name
-    self.view.contentSize = view.imageView.frame.size
     self.view.delegate = self
 
     becomeFirstResponder
@@ -16,16 +14,35 @@ class PathwayViewController < UIViewController
     gestureRecognizer = UITapGestureRecognizer.alloc.initWithTarget(self, action:'handleDoubleTap:')
     gestureRecognizer.numberOfTapsRequired = 2
     view.addGestureRecognizer(gestureRecognizer)
+  end
 
-    self.buttonView = UIView.alloc.initWithFrame(CGRectApplyAffineTransform(view.imageView.frame, CGAffineTransformMakeTranslation(-23, -9)))
-    view.imageView.addSubview(buttonView)
+  def viewDidAppear(animated)
+    MBProgressHUD.showHUDAddedTo(view, animated:true)
+    BW::HTTP.get(BASE_URL + "pathways/#{pathway.key}") do |response|
+      if response.ok?
+        pathway.enzymes = BW::JSON.parse(response.body.to_str)
 
-    pathway.enzymes.each.with_index do |enzyme, index|
-      button = UIButton.buttonWithType(UIButtonTypeCustom)
-      button.frame = enzyme.frame
-      button.tag = index
-      button.addTarget(self, action:'showMenuController:', forControlEvents:UIControlEventTouchDown)
-      buttonView.addSubview(button)
+        if NSFileManager.defaultManager.fileExistsAtPath(pathway.imagePath)
+          view.imageView = pathway.imagePath
+          addButtons
+          MBProgressHUD.hideHUDForView(view, animated:true)
+          self.view.zoomScale = view.minimumZoomScale
+        else
+          BW::HTTP.get("http://rest.kegg.jp/get/#{pathway.key}/image") do |res|
+            if res.ok?
+              res.body.writeToFile(pathway.imagePath, atomically:true)
+
+              view.imageView = pathway.imagePath
+              addButtons
+              MBProgressHUD.hideHUDForView(view, animated:true)
+            else
+              warn "Error while downloading pathway image"
+            end
+          end
+        end
+      else
+        warn "Error while downloading enzymes"
+      end
     end
   end
 
@@ -43,12 +60,6 @@ class PathwayViewController < UIViewController
     App.open_url "http://www.genome.jp/dbget-bin/www_bget?" + currentEnzyme.key
   end
 
-  def viewWillAppear(animated)
-    self.view.zoomScale = view.minimumZoomScale
-
-    super
-  end
-
   def viewForZoomingInScrollView(view)
     self.view.imageView
   end
@@ -62,6 +73,19 @@ class PathwayViewController < UIViewController
       view.zoomToRect([point, [100, 100]], animated:true)
     else
       view.setZoomScale(view.minimumZoomScale, animated:true)
+    end
+  end
+
+  def addButtons
+    self.buttonView = UIView.alloc.initWithFrame(CGRectApplyAffineTransform(view.imageView.frame, CGAffineTransformMakeTranslation(-23, -9)))
+    view.imageView.addSubview(buttonView)
+
+    pathway.enzymes.each.with_index do |enzyme, index|
+      button = UIButton.buttonWithType(UIButtonTypeCustom)
+      button.frame = enzyme.frame
+      button.tag = index
+      button.addTarget(self, action:'showMenuController:', forControlEvents:UIControlEventTouchDown)
+      buttonView.addSubview(button)
     end
   end
 
