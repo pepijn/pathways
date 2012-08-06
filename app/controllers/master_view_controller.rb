@@ -57,4 +57,8 @@ class MasterViewController < UITableViewController
     controller.pathway = pathway
     navigationController.pushViewController(controller, animated:true)
   end
+
+  def shouldAutorotateToInterfaceOrientation(interfaceOrientation)
+    interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown
+  end
 end

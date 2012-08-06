@@ -97,4 +97,8 @@ class PathwayViewController < UIViewController
   def canPerformAction(action, withSender:sender)
     action.to_s == 'openDetailView'
   end
+
+  def shouldAutorotateToInterfaceOrientation(interfaceOrientation)
+    interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown
+  end
 end

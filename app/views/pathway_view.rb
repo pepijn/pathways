@@ -1,4 +1,5 @@
 class PathwayView < UIScrollView
+  ZOOM_INDEX = 1.2
   attr_accessor :imageView
 
   def init
@@ -17,7 +18,7 @@ class PathwayView < UIScrollView
     addSubview(imageView)
 
     orientationHeight = Device.screen.height_for_orientation(Device.orientation)
-    self.minimumZoomScale = orientationHeight / image.size.height
+    self.minimumZoomScale = orientationHeight / image.size.height * ZOOM_INDEX
 
     UIView.animateWithDuration(0.3, animations:lambda {
       imageView.alpha = 1
