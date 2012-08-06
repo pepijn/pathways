@@ -4,5 +4,5 @@ Bundler.require
 require 'open-uri'
 require 'json'
 
-require './app'
+require './service/app'
 run Sinatra::Application

@@ -1,4 +1,4 @@
-BASE_URL = "http://pathways.dev/"
+BASE_URL = "http://metabomap.heroku.com/"
 
 class AppDelegate
   attr_accessor :navigationController, :data, :doc
