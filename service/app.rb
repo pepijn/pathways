@@ -41,6 +41,7 @@ get '/pathways' do
       categories << category
     end
 
+    pathway.delete :category
     category[:pathways] << pathway
   end
 
