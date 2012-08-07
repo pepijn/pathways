@@ -28,12 +28,19 @@ class PathwayViewController < UIViewController
             addButtons
             self.view.zoomScale = view.minimumZoomScale
             MBProgressHUD.hideHUDForView(view, animated:true)
+
+            if !App::Persistence['returning_customer']
+              App.alert "Touch an enzyme (purple box) for more information"
+              App::Persistence['returning_customer'] = true
+            end
           else
             warn "Error while downloading pathway image"
           end
         end
       else
         warn "Error while downloading enzymes"
+        navigationController.popViewControllerAnimated(true)
+        App.alert "This pathway is not suited for the mobile application yet"
       end
     end
   end
