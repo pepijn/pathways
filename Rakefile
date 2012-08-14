@@ -19,6 +19,7 @@ Motion::Project::App.setup do |app|
   end
 
   app.codesign_certificate = 'iPhone Distribution: Pepijn Looije'
+  app.provisioning_profile = '/Users/pepijn/Desktop/TestFlight_15_aug.mobileprovision'
 
   app.testflight.sdk = 'vendor/TestFlightSDK'
   app.testflight.api_token = '80c1607f35a1ef3c3b9acd9a5181b059_MjU0NDU5MjAxMS0xMi0xOSAxMTo1NToxNi4wNzgxODY'
