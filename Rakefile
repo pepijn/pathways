@@ -18,6 +18,8 @@ Motion::Project::App.setup do |app|
     pod 'MBProgressHUD'
   end
 
+  app.codesign_certificate = 'iPhone Distribution: Pepijn Looije'
+
   app.testflight.sdk = 'vendor/TestFlightSDK'
   app.testflight.api_token = '80c1607f35a1ef3c3b9acd9a5181b059_MjU0NDU5MjAxMS0xMi0xOSAxMTo1NToxNi4wNzgxODY'
   app.testflight.team_token = '5b5c06e258622c152fae85fadd19a0e3_NzM5MzEyMDEyLTAzLTIyIDA2OjI5OjE3LjU0ODEwOQ'
