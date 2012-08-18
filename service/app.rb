@@ -4,7 +4,7 @@ get '/pathways' do
   keys = []
   open('http://rest.kegg.jp/list/pathway').each do |line|
     line = line.split(' ')
-    keys << line.shift #.gsub('path:map', 'ec')
+    keys << line.shift
   end
 
   # Artificial limit
@@ -20,7 +20,7 @@ get '/pathways' do
 
           pathway = Bio::KEGG::PATHWAY.new(entry)
           pathways[index] = {
-            key: pathway.entry_id.gsub('map', 'ec'),
+            key: pathway.entry_id.gsub('map', 'ko'),
             name: pathway.name,
             category: pathway.keggclass.gsub('Metabolism; ', '')
           }
@@ -69,7 +69,7 @@ get "/pathways/:entry" do
   open(url) do |file|
     doc = Nokogiri.XML file
 
-    for enzyme in doc.xpath('/pathway/entry[@type="enzyme"]/graphics') do
+    for enzyme in doc.xpath('/pathway/entry[@type="ortholog"]/graphics') do
       enzymes << {
         key: enzyme['name'],
         frame: [[enzyme['x'], enzyme['y']], [enzyme['width'], enzyme['height']]]
@@ -80,7 +80,7 @@ get "/pathways/:entry" do
   # Parse API
   url = 'http://rest.kegg.jp/list/' + enzymes.map {|e| e[:key] }.join('+')
   open(url).each.with_index do |line, index|
-    enzymes[index][:name] = line.split(/[\t;]/)[1].chomp
+    enzymes[index][:name] = line.match(/.+[;] (.*) \[?.*/).to_s
   end
 
   {
